@@ -1,20 +1,18 @@
 
-
 Flay = new Object;
 Flay.Request = function (url, opts) { this.init(url, opts) };
 Flay.Request.opts = (function () {
 	// flay.js#SWF=/path/to/Flay.swf
 	// flay.js#SWF=/shared/js/lib/Flay.swf
 	var opts = {};
-	var scripts = document.getElementsByTagName("script");
-	// Fx3 だと scripts[scripts.length - 1] はうまくいかない
-	for (var i = 0, len = scripts.length; i < len; i++) {
-		if (scripts[i].src.match(/#(.+)/)) {
-			var list = RegExp.$1.split(',');
-			for (var j = 0; j < list.length; j++) {
-				var kv = list[j].split('=');
-				opts[kv[0]] = kv[1];
-			}
+
+	var scripts = document.getElementsByTagName('script');
+	var script  = scripts[scripts.length - 1];
+	if (script.src.match(/#(.+)/)) {
+		var list = RegExp.$1.split(',');
+		for (var j = 0; j < list.length; j++) {
+			var kv = list[j].split('=');
+			opts[kv[0]] = kv[1];
 		}
 	}
 	return opts
