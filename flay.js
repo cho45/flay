@@ -1,8 +1,23 @@
 
 
-Flay = { };
+Flay = new Object;
 Flay.Request = function (url, opts) { this.init(url, opts) };
-Flay.Request.swf       = 'Flay.swf';
+Flay.Request.opts = (function () {
+	// flay.js#SWF=/path/to/Flay.swf
+	// flay.js#SWF=/shared/js/lib/Flay.swf
+	var script = document.getElementsByTagName("script");
+	script = script[script.length - 1];
+	var opts = {};
+	if (script.src.match(/#(.+)/)) {
+		var list = RegExp.$1.split(',');
+		for (var i = 0; i < list.length; i++) {
+			var kv = list[i].split('=');
+			opts[kv[0]] = kv[1];
+		}
+	}
+	return opts
+})();
+Flay.Request.swf       = Flay.Request.opts.SWF;
 Flay.Request.swfid     = 'externalInterfaceFlay';
 Flay.Request.id        = 0;
 Flay.Request.requests  = {};
@@ -14,6 +29,7 @@ Flay.Request.prototype = {
 			if (Flay.Request.loaded) {
 				var id = Flay.Request.id++;
 				Flay.Request.requests[id] = opts;
+				console.log(id, opts);
 				as.request(id, opts);
 			} else {
 				setTimeout(arguments.callee, 10);
@@ -58,4 +74,37 @@ Flay.Request.loadedcb = function () {
 	Flay.Request.loaded = true;
 };
 
+
+if (typeof window["jQuery"] != "undefined") {
+	(function ($) {
+		$(function () { Flay.Request.insertSwf() });
+		_ajax = $.ajax;
+		$.ajax = function (opts) {
+			if (opts.useFlash) {
+				var url = opts.url;
+
+				if (/get/i.test(opts.type)) {
+					url += (url.indexOf("?") == -1) ? "?" + opts.data : "&" + opts.data;
+				}
+
+				new Flay.Request({
+						url    : url,
+						method : opts.type,
+
+						success : function (data) {
+							opts.success(data);
+							opts.complete();
+						},
+						error   : function (msg) {
+							opts.error(msg);
+							opts.complete();
+						}
+					}
+				);
+			} else {
+				_ajax(opts);
+			}
+		};
+	})(jQuery);
+}
 
