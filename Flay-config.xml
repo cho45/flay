@@ -1,0 +1,17 @@
+<flex-config>
+	<compiler>
+		<debug>true</debug>
+		<incremental>true</incremental>
+		<!--source-path>
+			<path-element>/Users/cho45/sdk/flex3sdk/mylib</path-element>
+		</source-path-->
+	</compiler>
+	<output>./Flay.swf</output>
+	<default-size>
+		<width>1</width>
+		<height>1</height>
+	</default-size>
+	<default-frame-rate>1</default-frame-rate>
+	<default-background-color>0xFFFFFF</default-background-color>
+</flex-config>
+
