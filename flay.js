@@ -5,7 +5,6 @@ Flay.Request.opts = (function () {
 	// flay.js#SWF=/path/to/Flay.swf
 	// flay.js#SWF=/shared/js/lib/Flay.swf
 	var opts = {};
-
 	var scripts = document.getElementsByTagName('script');
 	var script  = scripts[scripts.length - 1];
 	if (script.src.match(/#(.+)/)) {
@@ -52,8 +51,11 @@ Flay.Request.insertSwf = function() {
 
 	var div = document.createElement('div');
 	with (div.style) {
-		width   = "0px";
-		height  = "0px";
+		position = "absolute";
+		top     = "0";
+		left    = "0";
+		width   = "0";
+		height  = "0";
 		margin  = "0";
 		padding = "0";
 		border  = "none";
@@ -75,6 +77,7 @@ Flay.Request.loadedcb = function () {
 
 
 if (typeof window["jQuery"] != "undefined") {
+	// Must be loaded after any $.ajax hacks.
 	(function ($) {
 		$(function () { Flay.Request.insertSwf() });
 		_ajax = $.ajax;
