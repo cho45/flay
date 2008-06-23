@@ -10,11 +10,11 @@
 				new Flay.Request({
 					url : "test.html",
 					success : function (data) {
-						alert(data);
+						puts(data);
 					},
 
 					error : function (message) {
-						alert(message);
+						puts(message, 'error');
 					}
 				});
 
@@ -22,15 +22,58 @@
 					method: 'post',
 					url : "test.html",
 					success : function (data) {
-						alert(data);
+						puts(data);
 					},
 
 					error : function (message) {
-						alert(message);
+						puts(message, 'error');
+					}
+				});
+
+				new Flay.Request({
+					url : "http://static.flickr.com/",
+					success : function (data) {
+						puts(data);
+					},
+
+					error : function (message) {
+						puts(message, 'error');
+					}
+				});
+
+				new Flay.Request({
+					url : "http://static.flickr.com/",
+					success : function (data) {
+						puts(data);
+					},
+
+					error : function (message) {
+						puts(message, 'error');
 					}
 				});
 			};
+
+
+			function puts (str, klass) {
+				var container = document.createElement("pre");
+				container.className = "output " + klass;
+				container.appendChild(document.createTextNode(str));
+				document.body.appendChild(container);
+			}
 		</script>
+		<style type="text/css">
+			.output {
+				font-famiy: monospace;
+				background: #efefef;
+				margin: 1em;
+				padding: 1em;
+				border: 1px solid #ccc;
+			}
+
+			.output.error {
+				background: #ffdddd;
+			}
+		</style>
 	</head>
 	<body>
 	</body>
