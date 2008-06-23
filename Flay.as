@@ -1,8 +1,10 @@
 
 package {
-	import flash.display.*;
+	import flash.display.Sprite;
 	import flash.events.*;
-	import flash.net.*;
+	import flash.net.URLRequest;
+	import flash.net.URLLoader;
+	import flash.net.URLRequestMethod;
 	import flash.system.LoaderContext;
 	import flash.external.ExternalInterface;
 
@@ -21,7 +23,6 @@ package {
 			flash.system.Security.allowDomain('*');
 			// flash.system.Security.allwInsecureDomain('*');
 			ExternalInterface.addCallback('request', request);
-			log(loadedcb);
 			ExternalInterface.call(loadedcb);
 		}
 
