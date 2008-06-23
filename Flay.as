@@ -35,7 +35,6 @@ package {
 			req.data   = opts.data;
 			req.method = (opts.method == "POST") ? URLRequestMethod.POST : URLRequestMethod.GET;
 
-
 			loader.addEventListener(Event.COMPLETE, function (e:Event):void {
 				callbackToJS(id, e);
 			});

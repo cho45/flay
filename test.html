@@ -17,6 +17,18 @@
 						alert(message);
 					}
 				});
+
+				new Flay.Request({
+					method: 'post',
+					url : "test.html",
+					success : function (data) {
+						alert(data);
+					},
+
+					error : function (message) {
+						alert(message);
+					}
+				});
 			};
 		</script>
 	</head>

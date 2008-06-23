@@ -5,14 +5,16 @@ Flay.Request = function (url, opts) { this.init(url, opts) };
 Flay.Request.opts = (function () {
 	// flay.js#SWF=/path/to/Flay.swf
 	// flay.js#SWF=/shared/js/lib/Flay.swf
-	var script = document.getElementsByTagName("script");
-	script = script[script.length - 1];
 	var opts = {};
-	if (script.src.match(/#(.+)/)) {
-		var list = RegExp.$1.split(',');
-		for (var i = 0; i < list.length; i++) {
-			var kv = list[i].split('=');
-			opts[kv[0]] = kv[1];
+	var scripts = document.getElementsByTagName("script");
+	// Fx3 だと scripts[scripts.length - 1] はうまくいかない
+	for (var i = 0, len = scripts.length; i < len; i++) {
+		if (scripts[i].src.match(/#(.+)/)) {
+			var list = RegExp.$1.split(',');
+			for (var j = 0; j < list.length; j++) {
+				var kv = list[j].split('=');
+				opts[kv[0]] = kv[1];
+			}
 		}
 	}
 	return opts
@@ -90,6 +92,7 @@ if (typeof window["jQuery"] != "undefined") {
 				new Flay.Request({
 						url    : url,
 						method : opts.type,
+						data   : opts.data,
 
 						success : function (data) {
 							opts.success(data);
