@@ -62,7 +62,6 @@ Flay.Request.insertSwf = function() {
 	div.innerHTML = html.join('');
 };
 Flay.Request.callback = function (id, res) {
-	console.log(id, res);
 	if (res.error) {
 		Flay.Request.requests[id].error(res.error);
 	} else {

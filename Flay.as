@@ -38,6 +38,7 @@ package {
 			loader.addEventListener(Event.COMPLETE, function (e:Event):void {
 				callbackToJS(id, e);
 			});
+
 			loader.addEventListener(IOErrorEvent.IO_ERROR, function (e:Event):void {
 				errorbackToJS(id, IOErrorEvent.IO_ERROR);
 			});
