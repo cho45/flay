@@ -21,19 +21,16 @@ Flay.Request.swfid     = 'externalInterfaceFlay';
 Flay.Request.id        = 0;
 Flay.Request.requests  = {};
 Flay.Request.loaded    = false;
-Flay.Request.prototype = {
-	init : function (opts) {
-		var as = navigator.userAgent.match(/MSIE/) ? window[Flay.Request.swfid] : document[Flay.Request.swfid];
-		setTimeout(function () {
-			if (Flay.Request.loaded) {
-				var id = Flay.Request.id++;
-				Flay.Request.requests[id] = opts;
-				as.request(id, opts);
-			} else {
-				setTimeout(arguments.callee, 10);
-			}
-		}, 10);
+Flay.Request.loadedcb  = function () { Flay.Request.loaded = true };
+Flay.Request.callback  = function (id, res) {
+	var self = Flay.Request.requests[id];
+	if (res.error) {
+		self.opts.error(res.error);
+	} else {
+		self.opts.success(res.data);
 	}
+	self.opts.complete();
+	delete Flay.Request.requests[id];
 };
 Flay.Request.insertSwf = function() {
 	if (Flay.Request.loaded) return;
@@ -62,16 +59,34 @@ Flay.Request.insertSwf = function() {
 	document.body.appendChild(div);
 	div.innerHTML = html.join('');
 };
-Flay.Request.callback = function (id, res) {
-	if (res.error) {
-		Flay.Request.requests[id].error(res.error);
-	} else {
-		Flay.Request.requests[id].success(res.data);
+Flay.Request.prototype = {
+	init : function (opts) {
+		var self = this; self.id = Flay.Request.id++;
+		var as = navigator.userAgent.match(/MSIE/) ? window[Flay.Request.swfid] : document[Flay.Request.swfid];
+
+		self.opts  = {
+		//	url      : "",
+		//	data     : null,
+			method   : "GET",
+			success  : function () { },
+			error    : function () { },
+			complete : function () { },
+		};
+
+		for (var k in opts) if (opts.hasOwnProperty(k)) {
+			self.opts[k] = opts[k];
+		}
+
+		// waiting for loading swf
+		setTimeout(function () {
+			if (Flay.Request.loaded) {
+				Flay.Request.requests[self.id] = self;
+				as.request(self.id, opts);
+			} else {
+				setTimeout(arguments.callee, 10);
+			}
+		}, 10);
 	}
-	delete Flay.Request.requests[id];
-};
-Flay.Request.loadedcb = function () {
-	Flay.Request.loaded = true;
 };
 
 
@@ -95,10 +110,11 @@ if (typeof window["jQuery"] != "undefined") {
 
 						success : function (data) {
 							opts.success(data);
-							opts.complete();
 						},
 						error   : function (msg) {
 							opts.error(msg);
+						},
+						complete : function () {
 							opts.complete();
 						}
 					}
