@@ -28,7 +28,6 @@ Flay.Request.prototype = {
 			if (Flay.Request.loaded) {
 				var id = Flay.Request.id++;
 				Flay.Request.requests[id] = opts;
-				console.log(id, opts);
 				as.request(id, opts);
 			} else {
 				setTimeout(arguments.callee, 10);
