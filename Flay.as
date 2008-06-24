@@ -20,8 +20,6 @@ package {
 			callback = loaderInfo.parameters['callback'] || "Flay.Request.callback";
 			loadedcb = loaderInfo.parameters['loadedcb'] || "Flay.Request.loadedcb";
 
-			flash.system.Security.allowDomain('*');
-			flash.system.Security.allowInsecureDomain('*');
 			ExternalInterface.marshallExceptions = true;
 			ExternalInterface.addCallback('request', request);
 			ExternalInterface.call(loadedcb);
