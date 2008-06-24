@@ -70,7 +70,7 @@ Flay.Request.prototype = {
 			method   : "GET",
 			success  : function () { },
 			error    : function () { },
-			complete : function () { },
+			complete : function () { }
 		};
 
 		for (var k in opts) if (opts.hasOwnProperty(k)) {
