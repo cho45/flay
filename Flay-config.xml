@@ -2,6 +2,8 @@
 	<compiler>
 		<debug>false</debug>
 		<incremental>true</incremental>
+		<optimize>true</optimize>
+		<strict>true</strict>
 		<!--source-path>
 			<path-element>/Users/cho45/sdk/flex3sdk/mylib</path-element>
 		</source-path-->

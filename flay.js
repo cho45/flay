@@ -35,6 +35,12 @@ Flay.Request.callback  = function (id, res) {
 Flay.Request.insertSwf = function() {
 	if (Flay.Request.loaded) return;
 
+	// if SWFObject exists, check player version
+	if (window["deconcept"] && deconcept.SWFObjectUtil && deconcept.SWFObjectUtil.getPlayerVersion) {
+		var major = deconcept.SWFObjectUtil.getPlayerVersion().major;
+		if (+major < 9) throw Error("require Flash Player 9 or later");
+	}
+
 	var html = [
 		'<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="1" height="1" id="' + Flay.Request.swfid + '" align="middle">',
 			'<param name="allowscriptaccess" value="always" />',
@@ -104,21 +110,20 @@ if (typeof window["jQuery"] != "undefined") {
 				}
 
 				new Flay.Request({
-						url    : url,
-						method : opts.type,
-						data   : opts.data,
+					url      : url,
+					method   : opts.type,
+					data     : opts.data,
 
-						success : function (data) {
-							opts.success(data);
-						},
-						error   : function (msg) {
-							opts.error(msg);
-						},
-						complete : function () {
-							opts.complete();
-						}
+					success  : function (data) {
+						opts.success(data);
+					},
+					error    : function (msg) {
+						opts.error(msg);
+					},
+					complete : function () {
+						opts.complete();
 					}
-				);
+				});
 			} else {
 				_ajax(opts);
 			}
