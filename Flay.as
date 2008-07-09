@@ -1,7 +1,7 @@
 
 package {
-	import flash.display.Sprite;
 	import flash.events.*;
+	import flash.display.Sprite;
 	import flash.net.URLRequest;
 	import flash.net.URLLoader;
 	import flash.net.URLRequestMethod;
@@ -26,6 +26,8 @@ package {
 		}
 
 		public function request (id:Number, opts:Object):void {
+			if (opts.policyFile) flash.system.Security.loadPolicyFile(opts.policyFile);
+
 			var req:URLRequest   = new URLRequest(opts.url);
 			var loader:URLLoader = new URLLoader();
 
@@ -51,14 +53,15 @@ package {
 
 		private function callbackToJS (id:int, e:Event):void {
 			var loader:URLLoader = URLLoader(e.target);
+			trace(loader.data);
 			ExternalInterface.call(callback, id, {
-				data: loader.data
+				data: String(loader.data)
 			});
 		}
 
 		private function errorbackToJS (id:int, message:String):void {
 			ExternalInterface.call(callback, id, {
-				error: message
+				error: String(message)
 			});
 		}
 	}

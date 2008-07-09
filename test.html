@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title></title>
-		<script type="text/javascript" src="flay.js#SWF=./Flay.swf"></script>
+		<script type="text/javascript" src="flay.js#SWF=./Flay.swf?bar"></script>
 		<script type="text/javascript">
 			window.onload = function () {
 				Flay.Request.insertSwf();
@@ -42,7 +42,8 @@
 				});
 
 				new Flay.Request({
-					url : "http://static.flickr.com/",
+					url : "http://www.lingr.com/api/session/verify?session=foo",
+					policyFile : "http://www.lingr.com/api/crossdomain.xml",
 					success : function (data) {
 						puts(data);
 					},
